@@ -1,36 +1,6 @@
 import pandas as pd
-import pandera as pa
-from pandera.typing import Series, DataFrame
-
-class MySchema(pa.SchemaModel):
-    column1: Series[int] = pa.Field(le=10)
-    column2: Series[float] = pa.Field(lt=-1.2)
-    column3: Series[str] = pa.Field(str_startswith="value_")
-    @pa.check("column3")
-    def column_3_check(cls, series: Series[str]) -> Series[bool]:
-        """Check that column3 values have two elements after being split with '_'"""
-        return series.str.split("_", expand=True).shape[1] == 2
-
-class MySchema2(pa.SchemaModel):
-    column1: Series[int] = pa.Field(le=10)
-    column2: Series[float] = pa.Field(lt=-1.2)
-    column3: Series[str] = pa.Field(str_startswith="value_")
-    @pa.check("column3")
-    def column_3_check(cls, series: Series[str]) -> Series[bool]:
-        """Check that column3 values have two elements after being split with '_'"""
-        return series.str.split("_", expand=True).shape[1] == 2
-
-
-# スキーマ定義 ※あんまり実用的ではない
-# schema = pa.DataFrameSchema({
-#     "column1": pa.Column(int, checks=pa.Check.le(10)),
-#     "column2": pa.Column(float, checks=pa.Check.lt(-1.2)),
-#     "column3": pa.Column(str, checks=[
-#         pa.Check.str_startswith("value_"),
-#         # series の入力を受け取り boolean か boolean 型の series を返すカスタムチェックメソッドを定義
-#         pa.Check(lambda s: s.str.split("_", expand=True).shape[1] == 2)
-#     ]),
-# })
+from pandera.typing import DataFrame
+from schema import MySchema, MySchema2 
 
 # NGデータがあると、ここで異常終了する 
 # validated_df = schema(df)
