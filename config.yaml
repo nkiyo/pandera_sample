@@ -1,0 +1,8 @@
+hyperparameterA:
+  name: "ModelName_AAA"
+  param1: 1
+  param2: 2
+hyperparameterB:
+  name: "ModelName_BBB"
+  param1: 3
+  param2: 4

@@ -1,6 +1,21 @@
 import pandas as pd
+from jsonschema import validate
 from pandera.typing import DataFrame
-from schema import MySchema, MySchema2 
+from schema import MySchema, MySchema2, config_schema
+import yaml
+import json
+
+with open("config.yaml", "r") as c:
+    config = yaml.safe_load(c)
+
+with open("config.yaml.json", 'r') as file:
+    config_schema = json.load(file)
+
+validate(config, config_schema)
+
+# config.yaml フォーマットチェックする
+# https://stackoverflow.com/a/22231372/6389347
+
 
 # NGデータがあると、ここで異常終了する 
 # validated_df = schema(df)

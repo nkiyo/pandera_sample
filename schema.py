@@ -18,4 +18,3 @@ class MySchema2(pa.SchemaModel):
     def column_3_check(cls, series: Series[str]) -> Series[bool]:
         """Check that column3 values have two elements after being split with '_'"""
         return series.str.split("_", expand=True).shape[1] == 2
-
