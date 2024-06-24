@@ -1,4 +1,6 @@
+import sys
 import pandas as pd
+import pandera as pa
 from jsonschema import validate
 from pandera.typing import DataFrame
 from schema import MySchema, MySchema2
@@ -13,29 +15,33 @@ with open("config_schema.json", 'r') as file:
 
 validate(config, config_schema)
 
-
-
-# NGデータがあると、ここで異常終了する 
-# validated_df = schema(df)
-
 # TODO NGデータがあるとき、Falseを返す
 # TODO NGデータを取り除いたdfを返す
-# print(validated_df)
 
-def create_dataframe() -> DataFrame[MySchema]:
+def create_dataframe() -> DataFrame[MySchema] | None:
     # バリデーション用のデータ
     df = pd.DataFrame({
         "column1": [1, 4, 0, 10, 9],
-        "column2": [-1.3, -1.4, -2.9, -10.1, -20.4],
-        "column3": ["value_1", "value_2", "value_3", "value_2", "value_1"],
+        "ほげ": [1, 4, 0, 10, 9],
+        "column2": [-1.3, None, -2.9, -10.1, -20.4],
+        "column3": ["value_あ", "value_ab", "value_中原", "value_2", "value_1"],
     })
-    return MySchema.validate(df)
+    try:
+        validated_df = MySchema.validate(df)
+    except pa.errors.SchemaError as e:
+        print("validate error")
+        return None
+    print("validat succeeded")
+    return validated_df
+
 
 def convert_dataframe(df: DataFrame[MySchema]) -> DataFrame[MySchema2]:
     # TODO 複雑な変換処理
     return MySchema2.validate(df)
 
-mydf: DataFrame[MySchema] = create_dataframe()
+mydf: DataFrame[MySchema] | None = create_dataframe()
+if mydf is None:
+    sys.exit(1)
 print(mydf)
 mydf2: DataFrame[MySchema2] = convert_dataframe(mydf)
 print(mydf2)
