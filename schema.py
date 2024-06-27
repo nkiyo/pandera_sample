@@ -50,6 +50,7 @@ class MySchema4(pa.DataFrameModel):
     class Config:
         strict = "filter"
 
+# https://pandera.readthedocs.io/en/stable/dataframe_models.html#validate-against-multiple-schemas
 @pa.check_types
 def validate_3_or_4(df: DataFrame[MySchema3] | DataFrame[MySchema4]) -> DataFrame[MySchema3] | DataFrame[MySchema4]:
     return df
