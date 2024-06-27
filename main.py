@@ -1,9 +1,10 @@
 import sys
+import numpy as np
 import pandas as pd
 import pandera as pa
 from jsonschema import validate
 from pandera.typing import DataFrame
-from schema import MySchema, MySchema2
+from schema import MySchema, MySchema2,MySchema3, validate_3_or_4
 import yaml
 import json
 
@@ -31,7 +32,7 @@ def create_dataframe() -> DataFrame[MySchema] | None:
     except pa.errors.SchemaError as e:
         print("validate error")
         return None
-    print("validat succeeded")
+    # print("validat succeeded")
     return validated_df
 
 
@@ -42,8 +43,25 @@ def convert_dataframe(df: DataFrame[MySchema]) -> DataFrame[MySchema2]:
 mydf: DataFrame[MySchema] | None = create_dataframe()
 if mydf is None:
     sys.exit(1)
-print(mydf)
+# print(mydf)
 mydf2: DataFrame[MySchema2] = convert_dataframe(mydf)
-print(mydf2)
+# print(mydf2)
 
 
+df3 = pd.DataFrame({
+    "PassengerId": [1, 2, 3, 4],
+    "Survived": [1, None, 0, 1],
+    "hoge": [1, None, 0, 1],
+})
+df4 = pd.DataFrame({
+    "PassengerId": [1, 2, 3, 4],
+    "Survived": [1, 0, 0, 1],
+    "hoge": [1, None, 0, 1],
+})
+# validated_df3 = MySchema3.validate(df3)
+# validated_df3 = MySchema3.validate(df3)
+validated_df3 = validate_3_or_4(df3)
+validated_df4 = validate_3_or_4(df4)
+
+print(validated_df3)
+print(validated_df4)
