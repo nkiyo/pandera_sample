@@ -51,17 +51,21 @@ mydf2: DataFrame[MySchema2] = convert_dataframe(mydf)
 df3 = pd.DataFrame({
     "PassengerId": [1, 2, 3, 4],
     "Survived": [1, None, 0, 1],
+    "Survived2": [1, None, 1.2, 1],
+    "Survived3": [1, "hoge", None, 1],
+    "Cabin": ["abc", "def", None, "hij"],
     "hoge": [1, None, 0, 1],
 })
-df4 = pd.DataFrame({
-    "PassengerId": [1, 2, 3, 4],
-    "Survived": [1, 0, 0, 1],
-    "hoge": [1, None, 0, 1],
-})
+# df4 = pd.DataFrame({
+#     "PassengerId": [1, 2, 3, 4],
+#     "Survived": [1, 0, 0, 1],
+#     "Cabin": ["abc", "def", None, "hij"],
+#     "hoge": [1, None, 0, 1],
+# })
+validated_df3 = MySchema3.validate(df3)
 # validated_df3 = MySchema3.validate(df3)
-# validated_df3 = MySchema3.validate(df3)
-validated_df3 = validate_3_or_4(df3)
-validated_df4 = validate_3_or_4(df4)
+# validated_df3 = validate_3_or_4(df3)
+#validated_df4 = validate_3_or_4(df4)
 
 print(validated_df3)
-print(validated_df4)
+#print(validated_df4)
